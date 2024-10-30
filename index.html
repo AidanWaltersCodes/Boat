@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boat Navigation App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        .dropdown .dropbtn {
+            font-size: 17px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .navbar a:hover, .dropdown:hover .dropbtn {
+            background-color: #555;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .hero {
+            background-color: #f4f4f4;
+            padding: 20px 20px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#about">About</a>
+        <a href="#use-cases">Use Cases</a>
+        <a href="#requirements">Requirements</a>
+        <a href="#high-level-design">High Level Design</a>
+        <a href="#modules">Modules</a>
+        <a href="#design-rational">Design Rational</a>
+        <a href="#final-thoughts">Final Thoughts</a>
+    </div>
+
+    <div class="hero">
+        <h1>Google Boat</h1>
+        <p>Your smart companion for safe and efficient navigation</p>
+    </div>
+
+    <div class="content">
+        <section id="about">
+            <h1>About</h1>
+            <p>The inspiration behind Google Boat is creating a similar map service for mobile users that Google Map provides, 
+                but in the context of commercial boating. There are recent trends of boating increasing in popularity with 40% of boat 
+                sales increasing during the Covid pandemic, and now 11.9% of U.S. households own a recreational boat. Because of the increase 
+                in demand, Google wants to give users the ability to know where boats are in recreational waters, how to easily navigate with 
+                your boat, and provide additional information that could be pertinent to all different types of boaters! With Google Boat users 
+                will be able to see the current water traffic occurring nearby to make informed decisions on where they should go and what docks 
+                they should use. Google boat, will use satellites to collect geospatial information to create water maps for users, determine weather patterns, 
+                potential obstacles, etc. Overall, Google Boat will enhance boaters' experience by helping them decide where to take their boat and how to navigate 
+                safely while on waters. </p>
+            <p>
+                This app is designed for both recreational boaters and fishermen. Some of the key features in this app include real-time 
+                positioning, AI-assisted navigation, personalized boat management tools, and crowdsourced reporting of unsafe areas. The 
+                application uses advanced technologies like GPS, real-time data processing, and AI.  Additionally, the app will run on a 
+                modular microservice architecture with Kubernetes for high availability and scalability. Google Boat will enhance the boating 
+                experience by providing users with useful information, optimized navigation routes, and promoting safety on the water. </p>
+        </section>
+        <section id="use-cases">
+        <h1>Use Cases</h1>
+        <div class="use-case">
+            <h2>Use Case 1: Novice Fisherman</h2>
+            <p>John is a 28-year-old fisher who recently purchased his first boat. John wants to explore new fishing spots but is unsure about the best locations and how to navigate them properly. John discovers Google Boat and finds that it will help him carry out his fishing goals while still being a beginner.  </p>
+            <p>When John opens the app, he is greeted with a user-friendly interface that displays a map. He can easily search for popular fishing spots and view information about different things happening in the area (weather, boat traffic, etc.). The app also provides John with AI-assisted navigation, helping direct him to his chosen location while considering everything going on in the area.  </p>
+            <p>While on the water, John is happy being able to see the app’s real-time updates on wind speed, wave heights, and tide information, helping him make informed decisions while being new to fishing. John can easily make his way to his chosen fishing spot while saving his information on how to get there, as well as how to get back.  </p>
+        </div>
+        <div class="use-case">
+            <h2>Use Case 2: Experienced Recreational Boater</h2>
+            <p>Sarah is a 45-year-old teacher who has been enjoying recreational boating for many years. She owns a mid-sized motorboat and takes her family on many trips during weekend getaways. As someone who is experienced with boating, she is mainly concerned with planning efficient routes to save time and fuel costs. Sarah also wants to make sure that she gets reminders of when she needs to get maintenance checks on her boat so she can take care of her boat. </p>
+            <p>Sarah also likes the app’s ability to display the location of other boats in the area. The crowdsourced information from the app helps her make choices about which areas to visit and when. When exploring new boating spots, Sarah uses the Google Boat search functionality to find popular places to check out.  </p>
+            <h4>In both use cases, Google Boat proves to be a useful and easy-to-use solution, helping each user’s specific needs. By providing a range of features that help with safety, efficiency, and overall enjoyment. Google Boat establishes itself as a necessary tool for boaters and fishers of all skill levels. </h4>
+        </div>
+    </section>
+        <section id="requirements">
+            <h1>Requirements</h1>
+            <h4>Functional Requirements</h4>
+            <p>FR-1. The mobile application must have a map. </p>
+            <p>FR-2. The app must use GPS (Global Position System) to map current boat location and location of other boats. </p>
+            <p>FR-3. The app must have a map layer of waterways (lakes and oceans) and nearby land (determine mile radius). </p>
+            <p>FR-4. The app must ingest wind conditions and have a map layer to be added on top of waterways. </p>
+            <p>FR-5. The app must ingest tide and wave conditions and have a map layer to be added on top of waterways. </p>
+            <p>FR-6. The app must give ability for users to report areas of concern (debris, person overboard, etc). </p>
+            <p>FR-7. The app must prompt users if to provide their location and share that location with other users of the application. </p>
+            <p>FR-8. The app must have a search feature to look up waterways (lakes and oceans) and land destinations (docks and harbors). </p>
+            <p>FR-9. The app must provide navigation to other destinations (docks, harbors, or open water). </p>
+            <p>FR-10. For open water destinations, the app must prompt user distance (in nautical miles) they’d like to travel. </p>
+            <p>FR-11. For land destinations, the app must provide a fasted path through the waterways. The app must use weather, tide, and other vessels on water to create optimal path. </p>
+            <p>FR-12. The app must have a customizable checklist feature where the user can provide a list of items that must be complete before starting a navigation. </p>
+            <p>FR-13. The app must provide a feature for the user to provide their own boat information called “My Boat” (including where it’s docked, home dock is an option). </p>
+            <p>FR-14. The app must use boat information, weight, hull type, engine, to inform navigation in predicting length of navigation and gas consumed during trip. </p>
+            <p>FR-15. The app will provide generic notifications on normal maintenance checks on parts of the boats. </p>
+            <p>FR-16. The app must have an AI assisted feature to provide also provide suggested path through waterways for both water and land destinations; the suggested path will provide user if they’d like to maximize on fasted path or varying speeds of travel on certain paths to lower gas consumption. </p>
+            <p>FR-17. The app must save the location you departed from your navigation and use this location (if the user doesn’t override) to navigate back (implies can already start calculating the path back to make it faster). </p>
+            <p>FR-18. The map must be grayed out if the user is not within range of water.  </p>
+            <p>FR-19. The map must have compass. </p>
+            <h4>Non-Functional Requirements</h4>
+            <p>NFR-1. The app must be available on Android Studio and the Apple Store. </p>
+            <p>NFR-2. The app must respond in x time for locations in a 20-mile radius (implies caching). </p>
+            <p>NFR-3. The app must respond in y time for locations outside of 20-mile radius (implies needing to grab from central database). </p>
+            <p>NFR-4. The app must provide navigation path to destination in a maximum 2 minutes, however a navigation path back from the destination in 20 seconds (can start calculations ahead of time since most likely the user will be returning on where they start). </p>
+            <p>NFR-5. The app must prompt all users if they want to share their geolocation and notify the app will have limited features without it.</p>
+            <p>NFR-6. The app must notify user to rely on boat’s technology during the navigation for the most accurate data. </p>
+            <p>NFR-7. All data to the app must be encrypted. </p>
+            <p>NFR-8. The backend servers must be running in Kubernetes to provide high availability to users (microservice architecture). </p>
+        </section>
+        <section id="high-level-design">
+            <h1>High Level Design</h1>
+           <p>After reviewing the use cases and requirements, it was important to think about how the design of this project will work. It became clear that attempting to use a single architectural pattern across the system would not be beneficial, so we aimed to decompose the problem into more manageable pieces. </p>
+           <p>The first category encompasses real-time entity positioning and vessel monitoring. This includes immediate processing and response times, handling constant streams of GPS data and position updates for multiple boats on the water. The systems need to track the user's boat and maintain awareness of other boats in the area. This category requires event-driven architecture for the best performance. </p>
+           <p>The second category involves navigation and path optimization. This domain focuses on calculations for route planning, looking at different things such as weather, fuel efficiency, and personal boat specs. These components require computational resources but operate on a request response basis. Navigation information will be cached to the user and saved on the application to ensure no loss of navigation if internet service is lost. </p>
+           <p>The third category is map layer management and environmental data processing. This domain handles the integration and visualization of different data streams. The data streams this domain handles include depth information, weather conditions, and wave/tide data. These components need to process and combine different data sources in real-time while keeping optimal system performance. </p>
+           <p>The fourth category focuses on personal boat management and user data. Boat specifications, maintenance schedules, and user preferences are what this domain focuses on. Data persistence and storage are important as well as periodic updates. </p>
+           <p>By breaking our problem down into these four categories, we determined that a microservice architecture running on Kubernetes will provide the necessary flexibility and scalability for our project. Additionally, this will allow each component to use appropriate architectures for its specific requirements. The high-level module view of our design is shown below in Figure 1. </p>
+           <div style="text-align: center;">
+               <img src="images/diagram.png" alt="Website Logo" width="775" height="auto" style="border-radius: 15px;">
+               <p style="font-style: italic; margin-top: 10px;">Figure 1: Module View of Google Boat Architecture</p>
+           </div>
+           <p>We will structure the software system that implements these categories of requirements into four main modules, each encapsulated within the microservice architecture. The Real-Time Entity Positioning Module handles continuous position tracking and vessel monitoring with an event-driven architecture. Then, the Navigation Module will manage pathfinding with computational services. The Map Layers Module looks at and combines different environmental and geographical data. Finally, the Personal Boat Module handles everything needed for the user's boat like maintenance and boat specs. All of these modules are managed and coordinated through Kubernetes. Having container orchestration will ensure high availability, and efficient resource utilization. </p>
+           </section>
+        <section id="modules">
+            <h1>Modules</h1>
+
+            <h4>Real-Time Entity Positioning Module</h4>
+            <p>The Real-Time Entity Positioning Module is responsible for providing the location of vessels on the water. Users need to always know their location along with the location of other boats and ships for tracking and navigation purposes. The first component used for real-time positioning is Global Positioning System (GPS) data. The GPS data comes from the global navigation satellite system (GNSS), operated by the US Space Force, which is a network of satellites used to provide positioning services. GPS receivers are used to retrieve data from satellites, and, for civilian applications, provide accuracy of within 5 meters. All smartphones are equipped with GPS receivers to get location data. This location data will be used to locally track user’s boat on the app and will also be streamed to backend servers at a constant interval. The mobile app will also give a reporting feature to users to crowdsource information about potential hazards in the waterways, like submerged objects. </p>
+            <p>From here, all mobile users’ GPS data is aggregated into the real-time entity positioning module. This module is responsible for storing GPS data from all active users and reporting a list of entities to mobile app to plot on the map for the users within a radius of concern. For example, if John and Sarah were using the app and within a 20-mile radius of each other, then they would see each other on the map since their GPS data is shared to the backend. In addition, the real-time entity positioning module would receive AIS data feed. The Automatic Identification System (AIS) is currently used for navigation safety amongst mariners and primarily used for collision avoidance. The real-time entity positioning module can access this data via REST API to have live AIS data about vessels around the area for enhanced tracking and will be fed into the navigation algorithm. The server will provide the mobile client data of interested entities in the area, which will include id, position, velocity, and other attributes used to properly map entities in the waterways. The velocity can be calculated using positioning over time and is important so the mobile app can predict vessel movement while waiting for the server to update data. The mobile app will stay lean and not keep a record of previous data provided from the server, only live data, and request historical data from the server when needed. All data will be stored in a time series database, which is designed to store data over time, and will handle all CRUD (Create Read Update Delete) operations. With this module, users will be able to effectively view their own vessels and other vessels in the area and will assist the Navigation module on making optimal routes.</p>
+            <div style="text-align: center;">
+                <img src="images/entity.png" alt="Website Logo" width="775" height="auto" style="border-radius: 15px;">
+                <p style="font-style: italic; margin-top: 10px;">Figure 2: Entity Positioning Module Flow</p>
+            </div>
+            <h4>Map Layers Module</h4>
+            <p>The Map Layers module is responsible for providing the map to the users on the mobile app. GoogleBoat wants to provide the same feature as GoogleMap where a user can see a map of their surroundings, but specifically for waterways. The mapping layers would also provide different views of the waterways, such as regular and satellite. Map layers are geospatial information containing points, lines, or other shapes to represent an area in the world. For GoogleBoat, there are three different map layers: base, maritime, and weather. A base layer is the foundation where all other layers are added on top of and acts as the background; the maritime layer will be an optional layer to show water topography, including ridges and depth; the weather layer will be another optional layer to show weather conditions, such as temperature, wind conditions, and any upcoming warnings. These layers will give users the most information necessary about boating conditions and provide necessary data for the navigation module for route pathing needs.  </p>
+            <p>The architecture used to gather mapping layer data is pipe and filter. Each of the three layers are retrieved from three different sources and need a data pipeline to be served to the mobile app. First, the base layer is retrieved from the OpenStreetMap API, which is a popular source for crowdsource map data; Apple Maps uses OpenStreetMap for its mapping and there is a popular JavaScript library called Leaflet for mobile-friendly maps. However, GoogleBoat needs to be parsed directly from OpenStreetMap since it’s acting as the base for all other layers. The OpenStreetMap data is passed through a JSON parser filter, which is a common data format from REST API endpoints. Next, for the maritime layer, the National Oceanic and Atmospheric Administration (NOAA) offers Electronic Navigation Charts (ENC) that contain map layers including depth, tides, current, harbors, ports, etc. This data is provided by a Web Map Service (WMS), which is a common protocol used to service map images via the web in a specific JSON format; therefore, the maritime data is passed through a WMS parser filter. Lastly, the National Weather Service (also under NOAA) also offers weather map layers, but in a Keyhole Markup Language (KML), which is similar to WMS, but in XML. All three parser filters are piped into a single union filter to bring all the data under the same table. With map layers, there is different zoom levels a user can view; a zoom level adjuster filter is needed to extrapolate the data such that use all the same zoom levels. Finally, there is a spatial analysis filter, which is to separate the data back into three different layers and prepare it to be stored into a geodatabase. </p>
+
+            <div style="text-align: center;">
+                <img src="images/layers.png" alt="Website Logo" width="975" height="auto">
+                <p style="font-style: italic; margin-top: 10px;">Figure 3: Map Layers Module Flow (Pipe and Filter Architecture)</p>
+            </div>
+
+            <h4>Navigation Module</h4>
+            <p>The Navigation module is responsible for route planning and path optimization. The navigation module focuses on taking a destination input from the user and calculates the best route for their boat. First, a user puts a place a destination 
+                they'd like to travel, and the application will list of harbors and ports the user can go to. Alongside the list of locations, the user can dock their boat at, it will provide a preview of the path and gas consumption from their boat. The
+                navigation module can calculate the destination, path, and gas consumption by using all three other modules. The navigation module uses the map layers module to avoid shallow
+                waters and understand the weather and water conditions. The navigation module uses the real-time entity positioning to track the boat's location during the travel and avoid other vessels in the water. The navigation module uses the personal boat module
+                to calculate how much gas will likely be consumed by using the boat's weight, speed, hull-type, etc. By combining the data from all the modules, the navigation module can make calculations like going to a certain angle that goes with water tides to
+                save the most amount of gas. Then the user then confirms its destination and provides the mobile phone with the navigation details; this information is cached onto the device in the case an internet connection is lost. In addition, the backend server can create calculations for the route back and cache that on the device as well since the user will most 
+                likely return where they came from. During the navigation, the module adopts a process control architecture by using the user's GPS location to have live updates on the routing to the destination. The navigation will also use the other modules to avoid collision
+                with other vessels and inform the user if anything changes with weather or terrain. 
+            </p>
+            <p>
+                The Navigation module also takes advantage of AI/ML by storing all its users' navigation data. With this, the navigation module can start making more accurate calculations of estimated time arrival and better pathing
+                for the user. For example, if the estimated time was 2 hours, but the user actually took 3 hours, it can use this information when making its next prediction (barring that the boat will move at the pace the algorithm predicted and
+                the route provided was followed). In addition, this feature will allow for AI-assisted navigation; when a user inputs a destination and selects a docking location, the app can suggest two different routes: one to prioritize the fastest path and another to
+                optimize fuel consumption. It can also suggest the user the best time to leave for its destination by using weather, tides, shipping routes, etc. The possibilities grow exponentially by storing the navigation data and using all the information from 
+                the other modules.
+            </p>
+            <div style="text-align: center;">
+                <img src="images/navigation.png" alt="Website Logo" width="775" height="auto">
+                <p style="font-style: italic; margin-top: 10px;">Figure 4: Navigation Module Flow (Process Control Architecture)</p>
+            </div>
+
+            <h4>Personal Boat Module</h4>
+            <p>The Personal Boat Module is responsible for managing user-specific boat information and related features. The Module will provide a feature called “My Boat” where users can input certain things about their boat into the app. This includes details like the boat’s make, model, weight, engine specifications, and where the boat is docked (Including a set home dock). The boat information stored in the Personal Boat Modules is used by the Navigation Module to help guide navigation predictions. The different aspects of the user’s boat will be taken into account when estimating the duration of the navigation as well as the fuel consumed. The Module will also remind the user about maintenance checks on different parts of the boat. It will help users keep track of when they need to have maintenance checks to allow the boat to remain in proper condition. Additionally, the Module is responsible for securely storing the user-specific boat data.  </p>
+            <p>Data storage and management can be implemented using PostgreSQL for structured boat data storage. Different tables will include boats, engines, docking locations, maintenance records, and maintenance schedules.  The maintenance tracking system can be implemented with a simple background service like Quartz Scheduler. The maintenance checks will be based on engine hours, calendar time, seasonal requirements, and manufacturer recommendations. There will be push notifications for upcoming maintenance dates, overdue maintenance, and seasonal reminders for maintenance. Amazon Simple Queue Service will be set up to send messages to users who have them enabled. Security is implemented through Advanced Encryption Standard 256, and AWS Key Management Service for key management. Data will be encrypted in transit and at rest. When the user would like to use the checklists in the Personal Boat side of the application they will be allowed to do safety equipment verifications, weather condition checks, documentation requirement checks, fuel and fluid levels measurements, as well as navigation equipment checks on board. </p>
+            <div style="text-align: center;">
+                <img src="images/UML.png" alt="Website Logo" width="775" height="auto">
+                <p style="font-style: italic; margin-top: 10px;">Figure 5: Personal Boat UML Diagram</p>
+            </div>
+            <h2>Requirements Traceability Matrix</h2>
+                <style>
+                    .matrix-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 20px 0;
+                    }
+                    .matrix-table th, .matrix-table td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: left;
+                    }
+                    .matrix-table th {
+                        background-color: #f4f4f4;
+                    }
+                    .matrix-table tr:nth-child(even) {
+                        background-color: #f9f9f9;
+                    }
+                    .checkmark {
+                        color: #4CAF50;
+                        font-weight: bold;
+                    }
+                </style>
+                <table class="matrix-table">
+                    <tr>
+                        <th>Requirement ID</th>
+                        <th>Requirement Description</th>
+                        <th>Real-Time Entity Positioning Module</th>
+                        <th>Navigation Module</th>
+                        <th>Map Layers Module</th>
+                        <th>Personal Boat Module</th>
+                    </tr>
+                    <tr>
+                        <td>FR-1</td>
+                        <td>Mobile application must have a map</td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-2</td>
+                        <td>GPS mapping of current boat location and other boats</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-3</td>
+                        <td>Map layer of waterways and nearby land</td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-4</td>
+                        <td>Wind conditions map layer</td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-5</td>
+                        <td>Tide and wave conditions map layer</td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-6</td>
+                        <td>User reporting of areas of concern</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-7</td>
+                        <td>Location sharing functionality</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-8</td>
+                        <td>Search feature for waterways and destinations</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-9</td>
+                        <td>Navigation to destinations</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-10</td>
+                        <td>Open water distance prompts</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-11</td>
+                        <td>Optimal path calculation</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-12</td>
+                        <td>Customizable pre-navigation checklist</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>FR-13</td>
+                        <td>"My Boat" information feature</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>FR-14</td>
+                        <td>Boat specifications for navigation calculations</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>FR-15</td>
+                        <td>Maintenance check notifications</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>FR-16</td>
+                        <td>AI-assisted path suggestions</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-17</td>
+                        <td>Return navigation calculation</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-18</td>
+                        <td>Map graying out of non-water areas</td>
+                        <td></td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FR-19</td>
+                        <td>Compass functionality</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>NFR-1</td>
+                        <td>Cross-platform availability</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>NFR-2</td>
+                        <td>Response time for local radius</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>NFR-3</td>
+                        <td>Response time for extended radius</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>NFR-4</td>
+                        <td>Navigation calculation time constraints</td>
+                        <td></td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>NFR-5</td>
+                        <td>Geolocation sharing prompt</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>NFR-6</td>
+                        <td>Boat technology reliance notification</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>NFR-7</td>
+                        <td>Data encryption</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                    <tr>
+                        <td>NFR-8</td>
+                        <td>Kubernetes high availability</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                        <td class="checkmark">✓</td>
+                    </tr>
+                </table>
+        </section>
+        <section id="design-rational">
+            <h1>Design Rational</h1>
+            <h4>Real-Time Entity Positioning Module</h4>
+            <p>This is an event-driven architecture since events will drive when the mobile app sends GPS data to the server and when the server updates the app with a list of entities (FR-7); in addition, when a user reports a potential hazard, an event will trigger as well (FR-6). It’s important to note that each user must give permissions to share their location with not only the app but also that location is used to inform other users (NFR-5). A key design decision made for this module is the real-time requirement (FR-2). With real-time systems, maintaining live data is important, which plays nicely with having an event-driven architecture. As new data is present, events trigger to cause updates to the mobile app. However, an internet connection to reach back to the backend servers is not always present, especially while on the waters. Therefore, it’s important to use caching to provide the mobile app with data like other entities on the water when it loses connectivity. Caching is a good solution because waterways are a vase area, and therefore the mobile app can notify us that upon departure there were vessels in a given area and to look out for them, and the user can either confirm or deny these sitings while navigating (NFR-2, NFR-3). However, GoogleBoat is not meant to replace current boating technology but aid the user and the app will notify the user to always rely on the boat’s radar technology (NFR-6). This decision stems from that while mobile devices can always receive GPS data even without an internet connection, the most accurate data will always be present on the boat itself; the app’s benefits come from navigation assistance.</p>
+
+            <h4>Map Layers Module </h4>
+            <p>The pipe and filter architecture are most suitable for this application because additional map layers and filters can be added for additional features or fixes in the future. Now, there is a map layer service that has a read-only interface with the geodatabase which provides the map layer data to the mobile app. This design now allows the mobile app to request layers as needed by the user as it navigates to new spaces, and the logic is separate from how the data arrives in the geodatabase. With this module, GoogleBoat users will be able to view multiple map layers for their tracking and navigation needs while also providing more datapoints for the Navigation module. </p>
+
+            <h4>Navigation Module </h4>
+            <p>
+
+            </p>
+
+            <h4>Personal Boat Module </h4>
+            <p>The Personal Boat Module was designed with a focus on user-specific data management and maintenance tracking. This module addresses several key requirements. The Module supports the “My Boat” information feature by providing a simple and effective way to store and manage boat details (FR-13).  The separation between boat specifications and maintenance records allows for different updates and management. When thinking about the Personal Boat Module deseign it is necessary to support maintenance tracking to allow for user’s boats to remain up-to-date and safe to use (FR-15). The Module’s design ensures boat specifications like weight, engine type, hull, fuel type are all available so that the Navigation Module can accurately plan trips and calculate fuel consumption (FR-14). Implementing a customizable checklist system (FR-12) allows for additional safety to help users make sure they have everything they need before they leave on their trip.  This allows flexibility for the different users of the application. The module’s design also supports NRF-7 (data encryption) by centralizing sensitive boat information only to be seen by the user.  Additionally, the module’s architecture also supports NFR-8 through its compatibility with the microservice architecture running on Kubernetes. By running on Kubernetes, the application will ensure high availability of boat management features. All of these features are to help the user experience, and it allows for other modules to perform with information about a user’s boat.  </p>
+        </section>
+        <section id="final-thoughts">
+            <h1>Final Thoughts</h1>
+        </section>
+    </div>
+
+    <script>
+        // Get all the navigation links
+        const navLinks = document.querySelectorAll('.navbar a, .dropdown-content a');
+    
+        // Get all the content sections
+        const sections = document.querySelectorAll('.content section');
+    
+        // Hide all sections except the "About" section
+        sections.forEach(section => {
+            if (section.id !== 'about') {
+                section.style.display = 'none';
+            }
+        });
+    
+        // Add click event listener to each navigation link
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+    
+                // Hide all sections except the clicked section
+                sections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
